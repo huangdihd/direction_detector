@@ -9,6 +9,8 @@ from torchvision import models, transforms
 from torch.amp import GradScaler, autocast
 from PIL import Image
 from tqdm import tqdm
+from torch.utils.tensorboard import SummaryWriter
+import matplotlib.pyplot as plt
 
 
 # --- 1. 模型定义 ---
@@ -124,6 +126,10 @@ if __name__ == '__main__':
 
     print(f"🚀 开始在 {device} 上训练... (按 Ctrl+C 可随时安全退出并保存模型)")
 
+    # 【新增】初始化 TensorBoard
+    writer = SummaryWriter('runs/direction_detector')
+    loss_history = []
+
     # 【新增】使用 try 块包裹整个训练循环
     try:
         while True:
@@ -153,7 +159,15 @@ if __name__ == '__main__':
 
                 pbar.set_postfix(loss=f"{loss.item():.4f}")
 
+                # 【新增】每个 batch 记录到 TensorBoard
+                global_step = (epoch - 1) * len(dataloader) + batch_count
+                writer.add_scalar('Loss/train_batch', loss.item(), global_step)
+
             avg_epoch_loss = epoch_loss_sum / batch_count
+            loss_history.append(avg_epoch_loss)
+
+            # 【新增】每个 epoch 记录一次平均 loss
+            writer.add_scalar('Loss/train_epoch', avg_epoch_loss, epoch)
 
             if avg_epoch_loss < target_loss:
                 consecutive_good_epochs += 1
@@ -182,3 +196,17 @@ if __name__ == '__main__':
         print("\n\n🛑 接收到中止信号 (Ctrl+C)！正在紧急保存当前模型...")
         torch.save(model.state_dict(), 'orientation_model.pth')
         print("💾 保存成功！模型已保存为 orientation_model.pth")
+
+    finally:
+        # 【新增】训练结束或中断时，关闭 TensorBoard 并绘制 Loss 曲线图
+        writer.close()
+        if loss_history:
+            plt.figure(figsize=(10, 5))
+            plt.plot(loss_history, label='Train Loss')
+            plt.xlabel('Epoch')
+            plt.ylabel('Loss')
+            plt.title('Training Loss Curve')
+            plt.legend()
+            plt.grid(True)
+            plt.savefig('loss_curve.png')
+            print("📈 已将 Loss 曲线保存为 loss_curve.png")
