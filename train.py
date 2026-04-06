@@ -22,17 +22,9 @@ class OrientationNet(nn.Module):
         self.backbone.fc = nn.Sequential(
             nn.Linear(in_features, 128),
             nn.ReLU(),
-            nn.Linear(128, 256),
+            nn.Linear(128, 32),
             nn.ReLU(),
-            nn.Linear(256, 512),
-            nn.ReLU(),
-            nn.Linear(512, 256),
-            nn.ReLU(),
-            nn.Linear(256, 128),
-            nn.ReLU(),
-            nn.Linear(128, 64),
-            nn.ReLU(),
-            nn.Linear(64, 2)
+            nn.Linear(32, 2)
         )
 
     def forward(self, x):
@@ -121,7 +113,7 @@ if __name__ == '__main__':
     epoch = 1
 
     consecutive_good_epochs = 0
-    target_loss = 0.01
+    target_loss = 0.025
     patience = 2
 
     print(f"🚀 开始在 {device} 上训练... (按 Ctrl+C 可随时安全退出并保存模型)")
