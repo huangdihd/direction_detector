@@ -113,7 +113,7 @@ if __name__ == '__main__':
     epoch = 1
 
     consecutive_good_epochs = 0
-    target_loss = 0.025
+    target_loss = 0.005
     patience = 2
 
     print(f"🚀 开始在 {device} 上训练... (按 Ctrl+C 可随时安全退出并保存模型)")
