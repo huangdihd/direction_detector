@@ -1,0 +1,11 @@
+[project]
+name = "direction-detector"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.4.4",
+    "pandas>=3.0.2",
+    "pillow>=12.2.0",
+    "scikit-learn>=1.8.0",
+    "tqdm>=4.67.3",
+]
