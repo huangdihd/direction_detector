@@ -88,7 +88,7 @@ def process_and_predict(image, angle):
     return final_img, result_text
 
 # 3. 构建 Gradio 界面
-with gr.Blocks(title="Direction Detector WebUI", theme=gr.themes.Soft()) as demo:
+with gr.Blocks() as demo:
     gr.Markdown("# 🧭 Direction Detector (方向检测器)")
     gr.Markdown(f"**系统状态**: {model_status}")
     gr.Markdown("上传一张透明背景的物体图片，调整旋转角度，模型将实时预测其轴向（红线表示）。")
@@ -110,4 +110,11 @@ with gr.Blocks(title="Direction Detector WebUI", theme=gr.themes.Soft()) as demo
     )
 
 if __name__ == "__main__":
-    demo.launch(server_name="0.0.0.0", server_port=7860, share=False)
+    # 在 launch 中设置 title, theme 并开启 share=True 以便远程访问
+    demo.launch(
+        server_name="0.0.0.0", 
+        server_port=7860, 
+        share=True,
+        title="Direction Detector WebUI",
+        theme=gr.themes.Soft()
+    )
