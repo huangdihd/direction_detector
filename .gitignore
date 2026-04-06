@@ -21,6 +21,8 @@ sdist/
 var/
 wheels/
 share/python-wheels/
+run/*
+loss_curve.png
 *.egg-info/
 .installed.cfg
 *.egg
