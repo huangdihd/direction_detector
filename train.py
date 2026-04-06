@@ -149,7 +149,7 @@ if __name__ == '__main__':
                 epoch_loss_sum += loss.item()
                 batch_count += 1
 
-                pbar.set_postfix(loss=f"{loss.item():.4f}")
+                pbar.set_postfix(avg_loss=f"{epoch_loss_sum / batch_count:.4f}")
 
                 # 【新增】每个 batch 记录到 TensorBoard
                 global_step = (epoch - 1) * len(dataloader) + batch_count
