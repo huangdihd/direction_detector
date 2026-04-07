@@ -95,7 +95,7 @@ with gr.Blocks(title="Direction Detector WebUI") as demo:
     
     with gr.Row():
         with gr.Column():
-            input_image = gr.Image(type="pil", label="上传透明背景图片 (PNG)", image_mode="RGBA")
+            input_image = gr.Image(type="pil", label="上传透明背景图片 (PNG)", image_mode="RGBA", sources=["upload", "clipboard"])
             angle_slider = gr.Slider(minimum=0, maximum=360, step=1, value=0, label="模拟旋转角度 (°)")
             predict_btn = gr.Button("开始预测", variant="primary")
             
